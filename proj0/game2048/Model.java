@@ -137,14 +137,18 @@ public class Model extends Observable {
     }
 
     private boolean secondRowMove() {
+        boolean ifMove = false;
         for (int i = 0; i < board.size(); i++) {
             Tile currentTile = board.tile(i, 2);
             if (currentTile == null) {
                 continue;
             }
-            return secondRowIfMove(i, currentTile);
+            boolean temp = secondRowIfMove(i, currentTile);
+            if (ifMove == false) {
+                ifMove = temp;
+            }
         }
-        return false;
+        return ifMove;
     }
 
     private boolean secondRowIfMove(int i, Tile currentTile) {
@@ -161,14 +165,18 @@ public class Model extends Observable {
     }
 
     private boolean firstRowMove() {
+        boolean ifMove = false;
         for (int i = 0; i < board.size(); i++) {
             Tile currentTile = board.tile(i, 1);
             if (currentTile == null) {
                 continue;
             }
-            return firstRowIfMove(i, currentTile);
+            boolean temp = firstRowIfMove(i, currentTile);
+            if (ifMove == false) {
+                ifMove = temp;
+            }
         }
-        return false;
+        return ifMove;
     }
 
     private boolean firstRowIfMove(int i, Tile currentTile) {
@@ -216,14 +224,18 @@ public class Model extends Observable {
     }
 
     private boolean zeroRowMove() {
+        boolean ifMove = false;
         for (int i = 0; i < board.size(); i++) {
             Tile currentTile = board.tile(i, 0);
             if (currentTile == null) {
                 continue;
             }
-            return zeroRowIfMove(i, currentTile);
+            boolean temp = zeroRowIfMove(i, currentTile);
+            if (ifMove == false) {
+                ifMove = temp;
+            }
         }
-        return false;
+        return ifMove;
     }
 
     private boolean zeroRowIfMove(int i, Tile currentTile) {
