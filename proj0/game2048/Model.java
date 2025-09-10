@@ -123,18 +123,25 @@ public class Model extends Observable {
      * and the trailing tile does not.
      */
     public boolean tilt(Side side) {
+        board.setViewingPerspective(side);
+        boolean changed = tileMove();
+        board.setViewingPerspective(side.NORTH);
+        checkGameOver();
+        if (changed) {
+            setChanged();
+        }
+        return changed;
+    }
+
+    private boolean tileMove() {
         boolean changed = false;
         boolean changed1 = false, changed2 = false, changed0 = false;
         mergedThisMove = new boolean[board.size()][board.size()];
         changed2 = secondRowMove();
         changed1 = firstRowMove();
         changed0 = zeroRowMove();
-        if (changed0 || changed1 || changed2 || emptySpaceExists(board)) {
+        if (changed0 || changed1 || changed2) {
             changed = true;
-        }
-        checkGameOver();
-        if (changed) {
-            setChanged();
         }
         return changed;
     }
