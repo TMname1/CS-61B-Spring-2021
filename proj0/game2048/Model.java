@@ -121,18 +121,171 @@ public class Model extends Observable {
      * and the trailing tile does not.
      */
     public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
-
-        // TODO: Modify this.board (and perhaps this.score) to account
-        // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
-
+        boolean changed = false;
+        boolean changed1 = false, changed2 = false, changed0 = false;
+        changed2 = secondRowMove();
+        changed1 = firstRowMove();
+        changed0 = zeroRowMove();
+        if (changed0 || changed1 || changed2 || emptySpaceExists(board)) {
+            changed = true;
+        }
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+
+    private boolean secondRowMove() {
+        for (int i = 0; i < board.size(); i++) {
+            Tile currentTile = board.tile(i, 2);
+            if (currentTile == null) {
+                continue;
+            }
+            return secondRowIfMove(i, currentTile);
+        }
+        return false;
+    }
+
+    private boolean secondRowIfMove(int i, Tile currentTile) {
+        Tile nextTile = board.tile(i, 3);
+        if (nextTile == null) {
+            board.move(i, 3, currentTile);
+            return true;
+        } else if (nextTile.value() == currentTile.value()) {
+            board.move(i, 3, currentTile);
+            score += currentTile.value() * 2;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean firstRowMove() {
+        for (int i = 0; i < board.size(); i++) {
+            Tile currentTile = board.tile(i, 1);
+            if (currentTile == null) {
+                continue;
+            }
+            return firstRowIfMove(i, currentTile);
+        }
+        return false;
+    }
+
+    private boolean firstRowIfMove(int i, Tile currentTile) {
+        Tile nextTile = board.tile(i, 2);
+        Tile nextNextTile = board.tile(i, 3);
+        boolean ifMove = false;
+        boolean ifMove1 = false, ifMove2 = false, ifMove3 = false;
+        ifMove1 = firstRowMoveThirdRow(i, nextTile, nextNextTile, currentTile);
+        if (!ifMove1) {
+            ifMove2 = firstRowMoveSecondRow(i, nextTile, currentTile);
+        }
+        if (ifMove1 || ifMove2 || ifMove3) {
+            ifMove = true;
+        }
+        return ifMove;
+    }
+
+    private boolean firstRowMoveThirdRow(int i, Tile nextTile, Tile nextNextTile, Tile currentTile) {
+        if (nextTile != null) {
+            return false;
+        }
+        boolean ifMove = false;
+        if (nextNextTile == null) {
+            board.move(i, 3, currentTile);
+            ifMove = true;
+        } else if (nextNextTile.value() == currentTile.value()) {
+            board.move(i, 3, currentTile);
+            score += currentTile.value() * 2;
+            ifMove = true;
+        }
+        return ifMove;
+    }
+
+    private boolean firstRowMoveSecondRow(int i, Tile nextTile, Tile currentTile) {
+        boolean ifMove = false;
+        if (nextTile == null) {
+            board.move(i, 2, currentTile);
+            ifMove = true;
+        } else if (nextTile.value() == currentTile.value()) {
+            board.move(i, 2, currentTile);
+            score += currentTile.value() * 2;
+            ifMove = true;
+        }
+        return ifMove;
+    }
+
+    private boolean zeroRowMove() {
+        for (int i = 0; i < board.size(); i++) {
+            Tile currentTile = board.tile(i, 0);
+            if (currentTile == null) {
+                continue;
+            }
+            return zeroRowIfMove(i, currentTile);
+        }
+        return false;
+    }
+
+    private boolean zeroRowIfMove(int i, Tile currentTile) {
+        Tile nextTile = board.tile(i, 1);
+        Tile nextNextTile = board.tile(i, 2);
+        Tile nextNextNextTile = board.tile(i, 3);
+        boolean ifMove = false;
+        boolean ifMove1 = false, ifMove2 = false, ifMove3 = false;
+        ifMove3 = zeroRowMoveThirdRow(i, currentTile, nextTile, nextNextTile, nextNextNextTile);
+        if (!ifMove3) {
+            ifMove2 = zeroRowMoveSecondRow(i, nextTile, nextNextTile, currentTile);
+            if (!ifMove2) {
+                ifMove1 = zeroRowMoveFirstRow(i, currentTile, nextTile);
+            }
+        }
+        if (ifMove1 || ifMove2 || ifMove3) {
+            ifMove = true;
+        }
+        return ifMove;
+    }
+
+    private boolean zeroRowMoveThirdRow(int i, Tile currentTile, Tile nextTile, Tile nextNextTile,
+            Tile nextNextNextTile) {
+        if (nextTile != null || nextNextTile != null) {
+            return false;
+        }
+        if (nextNextNextTile == null) {
+            board.move(i, 3, currentTile);
+            return true;
+        } else if (nextNextNextTile.value() == currentTile.value()) {
+            board.move(i, 3, currentTile);
+            score += currentTile.value() * 2;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean zeroRowMoveSecondRow(int i, Tile nextTile, Tile nextNextTile, Tile currentTile) {
+        if (nextTile != null) {
+            return false;
+        }
+        if (nextNextTile == null) {
+            board.move(i, 2, currentTile);
+            return true;
+        } else if (nextNextTile.value() == currentTile.value()) {
+            board.move(i, 2, currentTile);
+            score += currentTile.value() * 2;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean zeroRowMoveFirstRow(int i, Tile currentTile, Tile nextTile) {
+        if (nextTile == null) {
+            board.move(i, 1, currentTile);
+            return true;
+        } else if (nextTile.value() == currentTile.value()) {
+            board.move(i, 1, currentTile);
+            score += currentTile.value() * 2;
+            return true;
+        }
+        return false;
     }
 
     /**
