@@ -17,6 +17,8 @@ public class Model extends Observable {
     private int maxScore;
     /** True iff game is ended. */
     private boolean gameOver;
+    // 成员变量：记录“这一轮”哪些格已经发生过合并
+    private boolean[][] mergedThisMove;
 
     /*
      * Coordinate System: column C, row R of the board (where row 0,
@@ -123,6 +125,7 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
         boolean changed = false;
         boolean changed1 = false, changed2 = false, changed0 = false;
+        mergedThisMove = new boolean[board.size()][board.size()];
         changed2 = secondRowMove();
         changed1 = firstRowMove();
         changed0 = zeroRowMove();
@@ -156,8 +159,9 @@ public class Model extends Observable {
         if (nextTile == null) {
             board.move(i, 3, currentTile);
             return true;
-        } else if (nextTile.value() == currentTile.value()) {
+        } else if (nextTile.value() == currentTile.value() && mergedThisMove[i][3] == false) {
             board.move(i, 3, currentTile);
+            mergedThisMove[i][3] = true;
             score += currentTile.value() * 2;
             return true;
         }
@@ -202,8 +206,9 @@ public class Model extends Observable {
         if (nextNextTile == null) {
             board.move(i, 3, currentTile);
             ifMove = true;
-        } else if (nextNextTile.value() == currentTile.value()) {
+        } else if (nextNextTile.value() == currentTile.value() && mergedThisMove[i][3] == false) {
             board.move(i, 3, currentTile);
+            mergedThisMove[i][3] = true;
             score += currentTile.value() * 2;
             ifMove = true;
         }
@@ -215,8 +220,9 @@ public class Model extends Observable {
         if (nextTile == null) {
             board.move(i, 2, currentTile);
             ifMove = true;
-        } else if (nextTile.value() == currentTile.value()) {
+        } else if (nextTile.value() == currentTile.value() && mergedThisMove[i][2] == false) {
             board.move(i, 2, currentTile);
+            mergedThisMove[i][2] = true;
             score += currentTile.value() * 2;
             ifMove = true;
         }
@@ -265,8 +271,9 @@ public class Model extends Observable {
         if (nextNextNextTile == null) {
             board.move(i, 3, currentTile);
             return true;
-        } else if (nextNextNextTile.value() == currentTile.value()) {
+        } else if (nextNextNextTile.value() == currentTile.value() && mergedThisMove[i][3] == false) {
             board.move(i, 3, currentTile);
+            mergedThisMove[i][3] = true;
             score += currentTile.value() * 2;
             return true;
         }
@@ -280,8 +287,9 @@ public class Model extends Observable {
         if (nextNextTile == null) {
             board.move(i, 2, currentTile);
             return true;
-        } else if (nextNextTile.value() == currentTile.value()) {
+        } else if (nextNextTile.value() == currentTile.value() && mergedThisMove[i][2] == false) {
             board.move(i, 2, currentTile);
+            mergedThisMove[i][2] = true;
             score += currentTile.value() * 2;
             return true;
         }
@@ -292,8 +300,9 @@ public class Model extends Observable {
         if (nextTile == null) {
             board.move(i, 1, currentTile);
             return true;
-        } else if (nextTile.value() == currentTile.value()) {
+        } else if (nextTile.value() == currentTile.value() && mergedThisMove[i][1] == false) {
             board.move(i, 1, currentTile);
+            mergedThisMove[i][1] = true;
             score += currentTile.value() * 2;
             return true;
         }
