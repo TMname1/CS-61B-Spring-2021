@@ -3,6 +3,8 @@ package Arithmetic;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import Arithmetic.Arithmetic;
+
 public class ArithmeticTest {
 
     /** Performs a few arbitrary tests to see if the product method is
