@@ -15,8 +15,8 @@ public class Model extends Observable {
     private int score;
     /** Maximum score so far. Updated when game ends. */
     private int maxScore;
-    /** True iff game is ended. */
-    private boolean gameOver;
+    /**
+    pri True iff game is ended. */vate boolean gameOver;
     // 成员变量：记录“这一轮”哪些格已经发生过合并
     private boolean[][] mergedThisMove;
 
