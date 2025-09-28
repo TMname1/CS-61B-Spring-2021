@@ -22,7 +22,6 @@ public class ArrayDeque<T> {
     nextFirst = move(nextFirst, false);
   }
 
-  // 524288
   public void addLast(T value) {
     size++;
     resize();
@@ -72,13 +71,15 @@ public class ArrayDeque<T> {
     if (flag == false) {
       return;
     }
+    // TODO fix bug 预期 762143 实际 762141
+    // TODO 缩小的时候出问题
     for (int i = 0; i < idx; i++) {
       nextFirst = move(nextFirst, true);
       temp[i + 1] = arr[nextFirst];
     }
     arr = temp;
     nextFirst = 0;
-    nextLast = size;
+    nextLast = idx + 1;
   }
 
   private int move(int dir, boolean plus) {
