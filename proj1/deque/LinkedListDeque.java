@@ -21,8 +21,8 @@ public class LinkedListDeque<T> {
   private int size;
 
   // 初始化哨兵结点，即创建空结点
-  public LinkedListDeque() {
-    sentinel = new Node(sentinel, sentinel, null);
+  public LinkedListDeque(T value) {
+    sentinel = new Node(sentinel, sentinel, value);
     size = 0;
   }
 
