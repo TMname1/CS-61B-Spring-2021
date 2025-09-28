@@ -21,8 +21,8 @@ public class LinkedListDeque<T> {
   private int size;
 
   // 初始化哨兵结点，即创建空结点
-  public LinkedListDeque(T value) {
-    sentinel = new Node(sentinel, sentinel, value);
+  public LinkedListDeque() {
+    sentinel = new Node(sentinel, sentinel, null);
     size = 0;
   }
 
@@ -64,7 +64,7 @@ public class LinkedListDeque<T> {
 
   public void printDeque() {
     Node p = sentinel.next;
-    while (p != null) {
+    while (p.value != null) {
       System.out.println(p.value + " ");
       p = p.next;
     }
@@ -73,7 +73,7 @@ public class LinkedListDeque<T> {
 
   public T removeFirst() {
     Node p = sentinel.next;
-    if (p == null) {
+    if (p.value == null) {
       return null;
     } else {
       sentinel.next = p.next;
@@ -85,7 +85,7 @@ public class LinkedListDeque<T> {
 
   public T removeLast() {
     Node p = sentinel.prev;
-    if (p == null) {
+    if (p.value == null) {
       return null;
     } else {
       sentinel.prev = p.prev;
