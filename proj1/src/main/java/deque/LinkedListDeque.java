@@ -11,9 +11,9 @@ public class LinkedListDeque<T> {
 
     // 构造一个结点
     public Node(Node p, Node n, T v) {
-      next = n;
-      prev = p;
-      value = v;
+      this.next = n;
+      this.prev = p;
+      this.value = v;
     }
   }
 
@@ -22,7 +22,9 @@ public class LinkedListDeque<T> {
 
   // 初始化哨兵结点，即创建空结点
   public LinkedListDeque() {
-    sentinel = new Node(sentinel, sentinel, null);
+    sentinel = new Node(null, null, null);
+    sentinel.next = sentinel;
+    sentinel.prev = sentinel;
     size = 0;
   }
 
