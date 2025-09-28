@@ -22,6 +22,7 @@ public class ArrayDeque<T> {
     nextFirst = move(nextFirst, false);
   }
 
+  // 524288
   public void addLast(T value) {
     size++;
     resize();
@@ -53,28 +54,31 @@ public class ArrayDeque<T> {
   private void resize() {
     T[] temp = null;
     boolean flag = false;
+    int idx = size;
     // 缩小
     if (size * 4 < arr.length && arr.length > initLen) {
       temp = (T[]) new Object[arr.length / 2];
       flag = true;
+      // 还原原本大小
+      idx++;
     }
     // 扩大
     if (size > arr.length) {
       temp = (T[]) new Object[arr.length * 2];
       flag = true;
+      // 还原原本大小
+      idx--;
     }
     if (flag == false) {
       return;
     }
-    int idx = 1;
-    while (nextFirst != nextLast) {
-      nextFirst = move(nextFirst, false);
-      temp[idx] = arr[nextFirst];
-      idx++;
+    for (int i = 0; i < idx; i++) {
+      nextFirst = move(nextFirst, true);
+      temp[i + 1] = arr[nextFirst];
     }
     arr = temp;
     nextFirst = 0;
-    nextLast = idx;
+    nextLast = size;
   }
 
   private int move(int dir, boolean plus) {
@@ -116,12 +120,16 @@ public class ArrayDeque<T> {
   }
 
   public void printDeque() {
-    int left = nextFirst, right = nextLast;
-    while (left != right) {
-      left = move(left, false);
+    int left = nextFirst;
+    for (int i = 0; i < size; i++) {
+      left = move(left, true);
       System.out.println(arr[left]);
     }
     System.out.println('\n');
+  }
+
+  public T get(int index) {
+    return arr[index];
   }
 
   // public Iterator<T> iterator() {
