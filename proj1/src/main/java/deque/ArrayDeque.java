@@ -71,8 +71,7 @@ public class ArrayDeque<T> {
     if (flag == false) {
       return;
     }
-    // TODO fix bug 预期 762143 实际 762141
-    // TODO 缩小的时候出问题
+
     for (int i = 0; i < idx; i++) {
       nextFirst = move(nextFirst, true);
       temp[i + 1] = arr[nextFirst];
@@ -130,7 +129,11 @@ public class ArrayDeque<T> {
   }
 
   public T get(int index) {
-    return arr[index];
+    int p = move(nextFirst, false);
+    for (int i = 0; i < index; i++) {
+      p = move(p, false);
+    }
+    return arr[p];
   }
 
   // public Iterator<T> iterator() {
