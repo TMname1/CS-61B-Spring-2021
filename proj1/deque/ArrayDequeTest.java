@@ -153,4 +153,15 @@ public class ArrayDequeTest {
       assertEquals("Should have the same value", i, lld1.removeLast(), 0);
     }
   }
+
+  @Test
+  public void getTest() {
+    ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
+    for (int i = 0; i < 20; i++) {
+      lld1.addLast(i);
+    }
+    for (int i = 0; i < 20; i++) {
+      assertEquals("Should have the same value", i, lld1.get(i), 0);
+    }
+  }
 }

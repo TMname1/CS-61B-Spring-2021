@@ -129,9 +129,12 @@ public class ArrayDeque<T> {
   }
 
   public T get(int index) {
-    int p = move(nextFirst, false);
+    if (index >= size) {
+      return null;
+    }
+    int p = move(nextFirst, true);
     for (int i = 0; i < index; i++) {
-      p = move(p, false);
+      p = move(p, true);
     }
     return arr[p];
   }
